@@ -1,47 +1,50 @@
 package com.biblioteca.biblioteca_digital.controller;
 
-import com.biblioteca.biblioteca_digital.dto.LoginRequest;
-import com.biblioteca.biblioteca_digital.dto.LoginResponse;
-import com.biblioteca.biblioteca_digital.model.User;
-import com.biblioteca.biblioteca_digital.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import com.biblioteca.biblioteca_digital.dto.AuthResponse;
+import com.biblioteca.biblioteca_digital.dto.ForgotPasswordRequest;
+import com.biblioteca.biblioteca_digital.dto.LoginRequest;
+import com.biblioteca.biblioteca_digital.dto.RegisterRequest;
+import com.biblioteca.biblioteca_digital.dto.ResetPasswordRequest;
+import com.biblioteca.biblioteca_digital.service.AuthService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
+	private final AuthService authService;
 
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
-                request.getPassword()
-            )
-        );
-
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow();
-
-        return new LoginResponse(
-            user.getId(),
-            user.getUsername(),
-            user.getEmail(),
-            user.getRole()
-        );
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
-}
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+    authService.forgotPassword(request);
+    return ResponseEntity.ok("Si el correo existe, se enviará un enlace de recuperación.");
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            authService.restablecerContrasena(request.getToken(), request.getNuevaContrasena());
+            return ResponseEntity.ok("Contraseña restablecida correctamente.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+      }
 
+}

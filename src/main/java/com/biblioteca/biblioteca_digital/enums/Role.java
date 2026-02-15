@@ -1,7 +1,8 @@
 package com.biblioteca.biblioteca_digital.enums;
 
 public enum Role {
-    ADMIN,
+	ADMIN,
     LIBRARIAN,
     READER
+
 }
