@@ -33,6 +33,10 @@ public class SecurityConfig {
     		    .authorizeHttpRequests(auth -> auth
     		        .requestMatchers("/api/auth/**").permitAll()
     		        .requestMatchers("/api/correo/**").permitAll()
+    		        //agregado recientemente:
+    		        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+    		        .requestMatchers("/api/libros/**").hasAnyRole("ADMIN", "LIBRARIAN")
+    		        
     		        .anyRequest().authenticated()
     		    )
     		    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -59,10 +63,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     
-    /*METODO PARA ENCRYPTAR Y VER LA PASSWORD
-	public static void main(String[] args) {
-		System.out.println("Pasword: "+ new BCryptPasswordEncoder().encode("pedro"));
-	}
-	*/
+    //METODO PARA ENCRYPTAR Y VER LA PASSWORD
+	/*public static void main(String[] args) {
+		System.out.println("Pasword: "+ new BCryptPasswordEncoder().encode("Admin1234"));
+	}*/
+	
 
 }

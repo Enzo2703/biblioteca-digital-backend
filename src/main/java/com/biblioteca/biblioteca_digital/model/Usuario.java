@@ -1,7 +1,11 @@
 package com.biblioteca.biblioteca_digital.model;
 
+import com.biblioteca.biblioteca_digital.enums.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,5 +37,9 @@ public class Usuario {
     @Column(name = "fecha_registro", updatable = false)
     private java.time.LocalDateTime fechaRegistro = java.time.LocalDateTime.now();
 
-
+    //agregado recientemente:
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }

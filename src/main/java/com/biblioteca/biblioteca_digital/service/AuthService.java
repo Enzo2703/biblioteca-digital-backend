@@ -12,6 +12,7 @@ import com.biblioteca.biblioteca_digital.dto.AuthResponse;
 import com.biblioteca.biblioteca_digital.dto.ForgotPasswordRequest;
 import com.biblioteca.biblioteca_digital.dto.LoginRequest;
 import com.biblioteca.biblioteca_digital.dto.RegisterRequest;
+import com.biblioteca.biblioteca_digital.enums.Role;
 import com.biblioteca.biblioteca_digital.model.TokenRecuperacion;
 import com.biblioteca.biblioteca_digital.model.Usuario;
 import com.biblioteca.biblioteca_digital.repository.TokenRecuperacionRepository;
@@ -41,7 +42,8 @@ public class AuthService {
         usuario.setNombre(request.getNombre());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-
+        usuario.setRole(Role.READER); //agregado recientemente
+        
         usuarioRepository.save(usuario);
 
         String jwtToken = jwtService.generateToken(usuario.getEmail());
