@@ -1,15 +1,18 @@
 package com.biblioteca.biblioteca_digital.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
 import com.biblioteca.biblioteca_digital.dto.BookDTO;
 import com.biblioteca.biblioteca_digital.mapper.BookMapper;
 import com.biblioteca.biblioteca_digital.model.Book;
 import com.biblioteca.biblioteca_digital.service.BookService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/libros")
 public class BookController {
 
     private final BookService bookService;
@@ -18,51 +21,46 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // Listar todos los libros
     @GetMapping
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks()
                 .stream()
                 .map(BookMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
 
- // 🔍 Búsqueda tipo barra
-    @GetMapping("/search")
-    public List<BookDTO> searchBooks(@RequestParam String query) {
-        return bookService.searchBooks(query)
-                .stream()
-                .map(BookMapper::toDTO)
-                .toList();
-    }
-
-    
-    
-    // Obtener libro por id
     @GetMapping("/{id}")
     public BookDTO getBookById(@PathVariable Long id) {
-        Book book = bookService.getBookById(id);
-        return BookMapper.toDTO(book);
+        return BookMapper.toDTO(bookService.getBookById(id));
     }
 
-    // Crear nuevo libro
     @PostMapping
-    public BookDTO createBook(@RequestBody Book book) {
-        Book created = bookService.createBook(book);
-        return BookMapper.toDTO(created);
+    @PreAuthorize("hasAnyRole('LIBRARIAN','ADMIN')")
+    public BookDTO createBook(@RequestBody BookDTO bookDTO) {
+        Book book = BookMapper.toEntity(bookDTO);
+        // Aquí se puede setear creadoPorId desde el usuario logueado
+        // book.setCreadoPor(loggedUserId);
+        return BookMapper.toDTO(bookService.createBook(book));
     }
 
-    // Actualizar libro
     @PutMapping("/{id}")
-    public BookDTO updateBook(@PathVariable Long id, @RequestBody Book book) {
-        Book updated = bookService.updateBook(id, book);
-        return BookMapper.toDTO(updated);
+    @PreAuthorize("hasAnyRole('LIBRARIAN','ADMIN')")
+    public BookDTO updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+        Book book = BookMapper.toEntity(bookDTO);
+        return BookMapper.toDTO(bookService.updateBook(id, book));
     }
 
-    // Eliminar libro
     @DeleteMapping("/{id}")
-    public String deleteBook(@PathVariable Long id) {
+    @PreAuthorize("hasAnyRole('LIBRARIAN','ADMIN')")
+    public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
-        return "Libro eliminado exitosamente";
+    }
+
+    @GetMapping("/search")
+    public List<BookDTO> searchBooks(@RequestParam String q) {
+        return bookService.searchBooks(q)
+                .stream()
+                .map(BookMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

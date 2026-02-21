@@ -1,43 +1,47 @@
 package com.biblioteca.biblioteca_digital.dto;
 
-public class BookDTO {
+import com.biblioteca.biblioteca_digital.enums.Tipo;
 
+public class BookDTO {
     private Long id;
-    private String isbn;
-    private String title;
-    private String description;
-    private Integer publicationYear;
-    private Integer availableCopies;
-    private Integer totalCopies;
-    private String category;
-    private Long authorId; // Relación con Author
+    private String titulo;
+    private String autor;
+    private String descripcion;
+    private Tipo tipo;
+    private String portadaUrl;
+    private String archivoUrl;
+    private Integer categoriaId;
+    private Integer creadoPorId;
+    private String estado;
 
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getIsbn() { return isbn; }
-    public void setIsbn(String isbn) { this.isbn = isbn; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getAutor() { return autor; }
+    public void setAutor(String autor) { this.autor = autor; }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public Integer getPublicationYear() { return publicationYear; }
-    public void setPublicationYear(Integer publicationYear) { this.publicationYear = publicationYear; }
+    public Tipo getTipo() { return tipo; }
+    public void setTipo(Tipo tipo) { this.tipo = tipo; }
 
-    public Integer getAvailableCopies() { return availableCopies; }
-    public void setAvailableCopies(Integer availableCopies) { this.availableCopies = availableCopies; }
+    public String getPortadaUrl() { return portadaUrl; }
+    public void setPortadaUrl(String portadaUrl) { this.portadaUrl = portadaUrl; }
 
-    public Integer getTotalCopies() { return totalCopies; }
-    public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
+    public String getArchivoUrl() { return archivoUrl; }
+    public void setArchivoUrl(String archivoUrl) { this.archivoUrl = archivoUrl; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Integer getCategoriaId() { return categoriaId; }
+    public void setCategoriaId(Integer categoriaId) { this.categoriaId = categoriaId; }
 
-    public Long getAuthorId() { return authorId; }
-    public void setAuthorId(Long authorId) { this.authorId = authorId; }
+    public Integer getCreadoPorId() { return creadoPorId; }
+    public void setCreadoPorId(Integer creadoPorId) { this.creadoPorId = creadoPorId; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }
-

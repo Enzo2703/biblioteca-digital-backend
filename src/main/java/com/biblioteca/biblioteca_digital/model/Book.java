@@ -1,75 +1,79 @@
 package com.biblioteca.biblioteca_digital.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import com.biblioteca.biblioteca_digital.enums.Tipo;
 
 @Entity
-@Table(name = "books")
+@Table(name = "libros")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 20)
-    private String isbn;
+    @Column(name = "titulo", nullable = false, length = 200)
+    private String titulo;
 
-    @Column(nullable = false, length = 150)
-    private String title;
+    @Column(name = "autor", nullable = false, length = 150)
+    private String autor;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String descripcion;
 
-    @Column(name = "publication_year")
-    private Integer publicationYear;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false)
+    private Tipo tipo;
 
-    @Column(name = "available_copies", nullable = false)
-    private Integer availableCopies = 0;
+    @Column(name = "portada_url", length = 255)
+    private String portadaUrl;
 
-    @Column(name = "total_copies", nullable = false)
-    private Integer totalCopies = 0;
+    @Column(name = "archivo_url", length = 255)
+    private String archivoUrl;
 
-    @Column(length = 50)
-    private String category; // FICTION, SCIENCE, HISTORY, etc.
+    @Column(name = "categoria_id", nullable = false)
+    private Integer categoriaId;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @Column(name = "creado_por", nullable = false)
+    private Integer creadoPor;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "fecha_creacion")
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    @Column(name = "estado", length = 1)
+    private String estado = "A"; // Soft delete: 'A' activo, 'I' inactivo
 
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getIsbn() { return isbn; }
-    public void setIsbn(String isbn) { this.isbn = isbn; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getAutor() { return autor; }
+    public void setAutor(String autor) { this.autor = autor; }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public Integer getPublicationYear() { return publicationYear; }
-    public void setPublicationYear(Integer publicationYear) { this.publicationYear = publicationYear; }
+    public Tipo getTipo() { return tipo; }
+    public void setTipo(Tipo tipo) { this.tipo = tipo; }
 
-    public Integer getAvailableCopies() { return availableCopies; }
-    public void setAvailableCopies(Integer availableCopies) { this.availableCopies = availableCopies; }
+    public String getPortadaUrl() { return portadaUrl; }
+    public void setPortadaUrl(String portadaUrl) { this.portadaUrl = portadaUrl; }
 
-    public Integer getTotalCopies() { return totalCopies; }
-    public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
+    public String getArchivoUrl() { return archivoUrl; }
+    public void setArchivoUrl(String archivoUrl) { this.archivoUrl = archivoUrl; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Integer getCategoriaId() { return categoriaId; }
+    public void setCategoriaId(Integer categoriaId) { this.categoriaId = categoriaId; }
 
-    public Author getAuthor() { return author; }
-    public void setAuthor(Author author) { this.author = author; }
+    public Integer getCreadoPor() { return creadoPor; }
+    public void setCreadoPor(Integer creadoPor) { this.creadoPor = creadoPor; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }
-
-
-
