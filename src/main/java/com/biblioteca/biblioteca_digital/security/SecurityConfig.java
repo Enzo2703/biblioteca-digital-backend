@@ -36,7 +36,7 @@ public class SecurityConfig {
     		        //agregado recientemente:
     		        .requestMatchers("/api/admin/**").hasRole("ADMIN")
     		        .requestMatchers("/api/books/**").hasAnyRole("ADMIN", "LIBRARIAN", "READER")
-    		        
+    		        .requestMatchers("/api/suscripciones/**").hasAnyRole("READER", "ADMIN")
     		        .anyRequest().authenticated()
     		    )
     		    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

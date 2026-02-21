@@ -38,6 +38,10 @@ public class Book {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+    
+    //Se usa para validar acceso
+    @Column(nullable = false)
+    private boolean premium;
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -69,6 +73,13 @@ public class Book {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    
+	public boolean isPremium() {
+		return premium;
+	}
+	public void setPremium(boolean premium) {
+		this.premium = premium;
+	}    
 }
 
 
