@@ -29,7 +29,8 @@ public class UsuarioController {
             usuario.getId(),
             usuario.getNombre(),
             usuario.getEmail(),
-            usuario.getEstado()
+            usuario.getEstado(),
+            usuario.getRole() //agregado
         );
 
         return ResponseEntity.ok(response);
