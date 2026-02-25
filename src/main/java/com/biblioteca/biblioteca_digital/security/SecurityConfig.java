@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
+@EnableMethodSecurity 
 public class SecurityConfig {
 	
 	private final UsuarioDetailsServiceImplement usuarioDetailsService;
@@ -35,7 +37,7 @@ public class SecurityConfig {
     		        .requestMatchers("/api/correo/**").permitAll()
     		        //agregado recientemente:
     		        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-    		        .requestMatchers("/api/books/**").hasAnyRole("ADMIN", "LIBRARIAN", "READER")
+    		        
     		        
     		        .anyRequest().authenticated()
     		    )
