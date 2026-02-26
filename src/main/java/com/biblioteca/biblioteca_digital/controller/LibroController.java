@@ -2,6 +2,7 @@ package com.biblioteca.biblioteca_digital.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biblioteca.biblioteca_digital.model.Libro;
+import com.biblioteca.biblioteca_digital.model.Usuario;
+import com.biblioteca.biblioteca_digital.repository.UsuarioRepository;
 import com.biblioteca.biblioteca_digital.service.LibroService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class LibroController {
 	
 	private final LibroService libroService;
+	private final UsuarioRepository usuarioRepository;
 	
 	@GetMapping
     public List<Libro> listar() {
@@ -63,6 +67,22 @@ public class LibroController {
 
         libroService.eliminar(id);
         return "Libro eliminado correctamente";
+    }
+    
+    //se valida si esta suscrito o no para leer libros si es premiun
+    @GetMapping("/{id}/leer")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> leerLibro(
+            @PathVariable Integer id,
+            Authentication authentication
+    ) {
+    	String email = authentication.getName();
+    	
+    	Usuario usuario = usuarioRepository.findByEmail(email)
+    	        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        String archivo = libroService.leerLibro(id, usuario.getId());
+
+        return ResponseEntity.ok(archivo);
     }
 
 }

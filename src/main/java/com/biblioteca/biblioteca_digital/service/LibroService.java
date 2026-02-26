@@ -17,4 +17,6 @@ public interface LibroService {
     void eliminar(Integer id);
 
     List<Libro> buscar(String titulo);
+    
+    String leerLibro(Integer libroId, Integer usuarioId);
 }

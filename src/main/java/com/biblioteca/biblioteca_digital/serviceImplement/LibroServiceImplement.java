@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.biblioteca.biblioteca_digital.enums.TipoLibro;
 import com.biblioteca.biblioteca_digital.model.Categoria;
 import com.biblioteca.biblioteca_digital.model.Libro;
 import com.biblioteca.biblioteca_digital.model.Usuario;
@@ -11,6 +12,7 @@ import com.biblioteca.biblioteca_digital.repository.CategoriaRepository;
 import com.biblioteca.biblioteca_digital.repository.LibroRepository;
 import com.biblioteca.biblioteca_digital.repository.UsuarioRepository;
 import com.biblioteca.biblioteca_digital.service.LibroService;
+import com.biblioteca.biblioteca_digital.service.SuscripcionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ public class LibroServiceImplement implements LibroService {
 	private final LibroRepository libroRepository;
     private final CategoriaRepository categoriaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final SuscripcionService suscripcionService;
     
 	@Override
 	public List<Libro> listar() {
@@ -73,6 +76,19 @@ public class LibroServiceImplement implements LibroService {
 	@Override
 	public List<Libro> buscar(String titulo) {
 		 return libroRepository.findByTituloContainingIgnoreCaseAndEstado(titulo, "A");
+	}
+
+	@Override
+	public String leerLibro(Integer libroId, Integer usuarioId) {
+		
+		Libro libro = libroRepository.findById(libroId)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+
+        if (libro.getTipo() == TipoLibro.PREMIUM) {
+            suscripcionService.validarSuscripcionActiva(usuarioId);
+        }
+
+        return libro.getArchivoUrl();
 	}
 
 	
