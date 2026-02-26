@@ -37,6 +37,8 @@ public class SecurityConfig {
     		        .requestMatchers("/api/correo/**").permitAll()
     		        //agregado recientemente:
     		        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+    		        .requestMatchers("/api/historial/**").hasRole("READER")
+    		        .requestMatchers("/api/favoritos/**").hasRole("READER")
     		        
     		        
     		        .anyRequest().authenticated()

@@ -81,7 +81,7 @@ public class LibroServiceImplement implements LibroService {
 	@Override
 	public String leerLibro(Integer libroId, Integer usuarioId) {
 		
-		Libro libro = libroRepository.findById(libroId)
+		Libro libro = libroRepository.findByIdAndEstado(libroId, "A")
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
 
         if (libro.getTipo() == TipoLibro.PREMIUM) {

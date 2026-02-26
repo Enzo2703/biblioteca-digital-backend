@@ -1,9 +1,9 @@
 package com.biblioteca.biblioteca_digital.model;
 
-
 import java.time.LocalDateTime;
 
-import com.biblioteca.biblioteca_digital.enums.EstadoSuscripcion;
+import com.biblioteca.biblioteca_digital.enums.EstadoPago;
+import com.biblioteca.biblioteca_digital.enums.MetodoPago;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,26 +18,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "suscripciones")
-public class Suscripcion {
+@Table(name = "pagos")
+public class Pago {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
+    private String codigoOperacion;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFin;
+    @Enumerated(EnumType.STRING)
+    private MetodoPago metodoPago;
+
+    private Double monto;
+
+    private LocalDateTime fechaPago;
 
     @Enumerated(EnumType.STRING)
-    private EstadoSuscripcion estado;
-    
-    
+    private EstadoPago estado;
 
 }

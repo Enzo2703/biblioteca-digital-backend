@@ -1,43 +1,40 @@
 package com.biblioteca.biblioteca_digital.model;
 
-
 import java.time.LocalDateTime;
 
-import com.biblioteca.biblioteca_digital.enums.EstadoSuscripcion;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "suscripciones")
-public class Suscripcion {
+@Table(name = "favoritos",
+uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","libro_id"}))
+public class Favorito {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFin;
-
-    @Enumerated(EnumType.STRING)
-    private EstadoSuscripcion estado;
-    
-    
+    @ManyToOne
+    @JoinColumn(name = "libro_id", nullable = false)
+    private Libro libro;
 
 }
