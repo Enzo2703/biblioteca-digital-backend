@@ -39,6 +39,7 @@ public class SecurityConfig {
     		        .requestMatchers("/api/admin/**").hasRole("ADMIN")
     		        .requestMatchers("/api/historial/**").hasRole("READER")
     		        .requestMatchers("/api/favoritos/**").hasRole("READER")
+    		        .requestMatchers("/uploads/**").permitAll()
     		        
     		        
     		        .anyRequest().authenticated()
@@ -69,8 +70,8 @@ public class SecurityConfig {
     
     //METODO PARA ENCRYPTAR Y VER LA PASSWORD
 	/*public static void main(String[] args) {
-		System.out.println("Pasword: "+ new BCryptPasswordEncoder().encode("Admin1234"));
-	}*/
-	
+		System.out.println("Pasword: "+ new BCryptPasswordEncoder().encode("Admin12345"));
+	}
+	*/
 
 }

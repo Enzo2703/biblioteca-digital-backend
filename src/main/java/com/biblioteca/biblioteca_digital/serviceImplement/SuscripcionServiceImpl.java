@@ -93,5 +93,6 @@ public class SuscripcionServiceImpl  implements SuscripcionService{
         suscripcionRepository.save(suscripcion);
 		
 	}
+	
 
 }
